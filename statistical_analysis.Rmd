@@ -4,8 +4,9 @@ author: "Erin Anthony"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup}
+library(knitr)
+knitr::opts_chunk$set(root.dir = '~/Amazon Drive/Documents/Amit Machine Learning/Assorted R Scripts/Springboard/Erin/stem-diversity/')
 ```
 
 ### Include the ggplot2 library
