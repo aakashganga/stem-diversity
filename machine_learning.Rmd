@@ -84,7 +84,7 @@ split = sample.split(edu.df$minorityEnroll, SplitRatio = 0.7)
 train = subset(edu.df, split == TRUE)
 test = subset(edu.df, split == FALSE)
 
-install.packages("rpart")
+#install.packages("rpart")
 library(rpart)
 install.packages("rpart.plot")
 library(rpart.plot)
