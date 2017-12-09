@@ -211,17 +211,36 @@ ggplot(edu.df, aes(x = size, y = minorityEnroll)) +
   ylab("Minority Enrollment")
 ```
 
+
 ### Visualize minority enrollment by cost of in-state tuition
 ```{r visualize minority enrollment by cost of in-state tuition}
 ggplot(aes(x = instateTuition, y = minorityEnroll), data = edu.df) + 
   geom_point(alpha = 0.25, color = 'purple') +
-  scale_x_log10() +
+  #scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+  #             labels = trans_format("log10", math_format(10^.x))) +
   geom_smooth(method = 'lm', color = 'blue') +
   ggtitle("Minority Enrollment by Cost of In-State Tuition") + 
   theme(plot.title = element_text(hjust = 0.5)) +
   xlab("Cost of In-State Tuition") + 
   ylab("Minority Enrollment")
 ```
+
+
+
+
+### Visualize minority enrollment by cost of in-state tuition
+```{r visualize minority enrollment by cost of in-state tuition}
+ggplot(aes(x = instateTuition, y = minorityEnroll), data = edu.df) + 
+  geom_point(alpha = 0.25, color = 'purple') +
+  scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) +
+  geom_smooth(method = 'lm', color = 'blue') +
+  ggtitle("Minority Enrollment by Cost of In-State Tuition") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  xlab("Cost of In-State Tuition") + 
+  ylab("Minority Enrollment")
+```
+
 
 ### Visualize minority enrollment by student-faculty ratio
 ```{r visualize minority enrollment by student-faculty ratio}
@@ -235,10 +254,36 @@ ggplot(aes(x = facultyRatio, y = minorityEnroll), data = edu.df) +
 ```
 
 ### Visualize minority enrollment by average grant aid awarded
+
+```{r visualize minority enrollment by average grant aid awarded}
+edu.df.select1 = subset(edu.df,(grantAid >=1000 & grantAid <=9000))
+ggplot(aes(x = grantAid, y = minorityEnroll), data = edu.df.select1) + 
+  geom_point(alpha = 0.25, color = 'purple') +
+  #scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+  #              labels = trans_format("log10", math_format(10^.x))) +
+  geom_smooth(method = 'lm', color = 'blue') +
+  ggtitle("Minority Enrollment by Average Grant Aid Awarded") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  xlab("Average Grant Aid Awarded") + 
+  ylab("Minority Enrollment")
+
+edu.df.select2 = subset(edu.df,(grantAid >=9000))
+ggplot(aes(x = grantAid, y = minorityEnroll), data = edu.df.select2) + 
+  geom_point(alpha = 0.25, color = 'purple') +
+  #scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+  #              labels = trans_format("log10", math_format(10^.x))) +
+  geom_smooth(method = 'lm', color = 'blue') +
+  ggtitle("Minority Enrollment by Average Grant Aid Awarded") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  xlab("Average Grant Aid Awarded") + 
+  ylab("Minority Enrollment")
+```
+
 ```{r visualize minority enrollment by average grant aid awarded}
 ggplot(aes(x = grantAid, y = minorityEnroll), data = edu.df) + 
   geom_point(alpha = 0.25, color = 'purple') +
-  scale_x_log10() +
+  scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) +
   geom_smooth(method = 'lm', color = 'blue') +
   ggtitle("Minority Enrollment by Average Grant Aid Awarded") + 
   theme(plot.title = element_text(hjust = 0.5)) +
@@ -248,15 +293,73 @@ ggplot(aes(x = grantAid, y = minorityEnroll), data = edu.df) +
 
 ### Visualize minority enrollment by average loan aid awarded
 ```{r visualize minority enrollment by average loan aid awarded}
-ggplot(aes(x = loanAid, y = minorityEnroll), data = edu.df) + 
+edu.df.select = subset(edu.df,(loanAid >=5000 & loanAid <=10000))
+ggplot(aes(x = loanAid, y = minorityEnroll), data = edu.df.select) + 
   geom_point(alpha = 0.25, color = 'purple') +
-  scale_x_log10() +
+  #scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+  #              labels = trans_format("log10", math_format(10^.x))) +
   geom_smooth(method = 'lm', color = 'blue') +
   ggtitle("Minority Enrollment by Average Loan Aid Awarded") + 
   theme(plot.title = element_text(hjust = 0.5)) +
   xlab("Average Loan Aid Awarded") + 
   ylab("Minority Enrollment")
 ```
+
+
+```{r visualize minority enrollment by average loan aid awarded}
+ggplot(aes(x = loanAid, y = minorityEnroll), data = edu.df.select) + 
+  geom_point(alpha = 0.25, color = 'purple') +
+  scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) +
+  geom_smooth(method = 'lm', color = 'blue') +
+  ggtitle("Minority Enrollment by Average Loan Aid Awarded") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  xlab("Average Loan Aid Awarded") + 
+  ylab("Minority Enrollment")
+```
+
+
+```{r}
+edu.df$pergrantAid = edu.df$grantAid*100/edu.df$instateTuition
+ggplot(aes(x = pergrantAid, y = minorityEnroll), data = edu.df) + 
+  geom_point(alpha = 0.25, color = 'purple') +
+  scale_x_log10() +
+  geom_smooth(method = 'lm', color = 'blue') +
+  ggtitle("Minority Enrollment by Percentage grant Aid Awarded") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  xlab("Average grant Aid Awarded") + 
+  ylab("Minority Enrollment")
+```
+
+
+
+```{r}
+edu.df$perloanAid = edu.df$loanAid*100/edu.df$instateTuition
+ggplot(aes(x = perloanAid, y = minorityEnroll), data = edu.df) + 
+  geom_point(alpha = 0.25, color = 'purple') +
+  scale_x_log10() +
+  geom_smooth(method = 'lm', color = 'blue') +
+  ggtitle("Minority Enrollment by Percentage loan Aid Awarded") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  xlab("Average loan Aid Awarded") + 
+  ylab("Minority Enrollment")
+```
+
+
+```{r}
+edu.df$pertotAid = (edu.df$loanAid + edu.df$grantAid)*100/edu.df$instateTuition
+edu.df.select = subset(edu.df,(pertotAid > 50 & pertotAid < 500))
+ggplot(aes(x = pertotAid, y = minorityEnroll), data = edu.df.select) + 
+  geom_point(alpha = 0.25, color = 'purple') +
+  scale_x_log10() +
+  geom_smooth(method = 'lm', color = 'blue') +
+  ggtitle("Minority Enrollment by Percentage total Aid Awarded") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  xlab("Percentage total Aid Awarded") + 
+  ylab("Minority Enrollment")
+```
+
+
 
 ### Visualize minority enrollment by both grant aid and tuition cost
 ```{r visualize minority enrollment by both grant aid and tuition cost}
