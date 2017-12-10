@@ -1,0 +1,67 @@
+---
+title: "Machine Learning"
+author: "Erin Anthony"
+output: html_document
+---
+
+```{r setup}
+library(knitr)
+knitr::opts_chunk$set(root.dir = '~/Amazon Drive/Documents/Amit Machine Learning/Assorted R Scripts/Springboard/Erin/stem-diversity/')
+```
+
+### Machine learning summary
+
+The machine learning problem that I am exploring in this analysis is how to predict the proportion of minority enrollments at an institution of higher education using various institutional characteristics as the predictor variables. This is a supervised problem, because both predictor and target variable values are available in the data set and an algorithm will be created to map the input variables onto the output variables. I will also convert this from a regression to a classification problem by converting the target variable from a numerical variable to a categorical variable with three levels: low, medium, and high.
+
+The independent variables that will be used in the initial model are location region, HBCU status, tribal college status, degree of location urbanization, open enrollment status, land grant status, Associate's degree offering, all-distance courses, some distance courses, study abroad offering, weekend courses, remedial courses, counseling access, day care access, on-campus housing, meal plan offering, cost of in-state tuition, size, student-faculty ratio, average grant aid, averag loan aid, employment/placement services, and access to tuition payment options. The dependent variable is the categorical level of minority enrollment (defined as African-American and Hispanic/Latino enrollment) at the institution. 
+
+The machine learning technique used to build a model will be a decision tree. The percentage of accurate predictions will be calculated to determine the model accuracy. 
+
+### Convert minority enrollment to a categorial variable
+```{r convert minority enrollment to a categorical variable}
+median(edu.df$minorityEnroll) # 19%
+edu.df$minorityEnroll <- with(edu.df, ifelse(minorityEnroll<=19, "Low", "High"))
+table(edu.df$minorityEnroll) # 1131 Low, 1089 High
+```
+
+# Split the data into a training set and a testing set
+```{r split the data into a training set and a testing set}
+split = sample.split(edu.df$minorityEnroll, SplitRatio = 0.7)
+train = subset(edu.df, split == TRUE)
+test = subset(edu.df, split == FALSE)
+```
+
+### Create a decision tree model using all variables
+```{r create a decision tree model using all variables}
+library(caTools)
+<<<<<<< HEAD
+set.seed(1000)
+
+# split the data into a training set and a testing set
+split = sample.split(edu.df$minorityEnroll, SplitRatio = 0.7)
+train = subset(edu.df, split == TRUE)
+test = subset(edu.df, split == FALSE)
+
+#install.packages("rpart")
+=======
+>>>>>>> 552117ea7270c564212cec6607eb953345a9f872
+library(rpart)
+library(rpart.plot)
+set.seed(1000)
+
+# create and examine the decision tree
+decTree = rpart(minorityEnroll ~ ., data=train, method="class", control=rpart.control(minbucket=25))
+prp(decTree)
+plotcp(decTree)
+
+# 5 variables used in the tree: region, grant aid, loan aid, student-faculty ratio, and location urbanization level
+
+# use decision tree model to predict the target variable
+prediction = predict(decTree, newdata=test, type="class")
+table(test$minorityEnroll, prediction)
+# (217 + 266) / (217 + 266 + 110 + 73) = 0.725 accuracy rate
+```
+
+### Machine learning summary continued - evaluation of decision tree model
+
+The decision tree model accurately predicted 72.5% of the outcome variable. The final independent variables used in the decision tree model are region, grant aid, loan aid, student-faculty ratio, and location urbanization level.
