@@ -34,8 +34,6 @@ test = subset(edu.df, split == FALSE)
 ### Create a decision tree model using all variables
 ```{r create a decision tree model using all variables}
 library(caTools)
-<<<<<<< HEAD
-set.seed(1000)
 
 # split the data into a training set and a testing set
 split = sample.split(edu.df$minorityEnroll, SplitRatio = 0.7)
@@ -43,8 +41,7 @@ train = subset(edu.df, split == TRUE)
 test = subset(edu.df, split == FALSE)
 
 #install.packages("rpart")
-=======
->>>>>>> 552117ea7270c564212cec6607eb953345a9f872
+#=======
 library(rpart)
 library(rpart.plot)
 set.seed(1000)
@@ -53,6 +50,9 @@ set.seed(1000)
 decTree = rpart(minorityEnroll ~ ., data=train, method="class", control=rpart.control(minbucket=25))
 prp(decTree)
 plotcp(decTree)
+
+library(caret)
+
 
 # 5 variables used in the tree: region, grant aid, loan aid, student-faculty ratio, and location urbanization level
 
